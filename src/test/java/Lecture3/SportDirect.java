@@ -24,6 +24,8 @@ public class SportDirect {
     private static final By UNISEX_ADULTS_SWIMSUITS_BUTTON = By.xpath("//*[contains(text(), 'Unisex Adults') and @class='FilterName']");
     private static final By GIRLS_SWIMSUITS_BUTTON = By.xpath("//*[contains(text(), 'Girls') and @class='FilterName']");
 
+    private static WebDriver driver;
+
     @Test
     public void checkingSportDirectItemCount() throws InterruptedException {
         System.setProperty("webdriver.gecko.driver", "/Users/aleksandrs/QAcourses/geckodriver");
@@ -47,8 +49,7 @@ public class SportDirect {
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0," + (hoverItem.getY() - 400) + ");");
         driver.findElement(SWIMMING_TAB_BUTTON).click();
 
-        waitForElement.until(ExpectedConditions.elementToBeClickable(SWIMSUITS_OPTION_BUTTON));
-        driver.findElement(SWIMSUITS_OPTION_BUTTON).click();
+        openSwimmingTab();
         waitForElement.until(ExpectedConditions.presenceOfElementLocated(UNISEX_ADULTS_SWIMSUITS_BUTTON));
         driver.findElement(UNISEX_ADULTS_SWIMSUITS_BUTTON).click();
         waitForElement.until(ExpectedConditions.presenceOfElementLocated(GIRLS_SWIMSUITS_BUTTON));
@@ -59,5 +60,11 @@ public class SportDirect {
         waitForElement.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@class='rtimg MainImage img-responsive']")));
         Assert.assertEquals(3, swimsuits.size());
         driver.quit();
+    }
+
+    public static void  openSwimmingTab() {
+        WebDriverWait waitForElement = new WebDriverWait(driver, 5);
+        waitForElement.until(ExpectedConditions.elementToBeClickable(SWIMSUITS_OPTION_BUTTON));
+        driver.findElement(SWIMSUITS_OPTION_BUTTON).click();
     }
 }

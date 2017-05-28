@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
- * My first test for QA. It will open some random page.
+ * My first registration for QA. It will open some random page.
  */
 public class MainPage {
 

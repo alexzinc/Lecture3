@@ -18,19 +18,33 @@ public class SearchingInGoogle {
     private static final By SEARCH_BAR = By.xpath("//*[@id='lst-ib']");
     private static final By GROOVY_LIFE_SHOP = By.xpath("(//*[contains(text(),'groovyforlife')])[2]");
 
+
     @Test
     public void searchingGoogleForElement() {
+
+        WebDriver driver = getDriver();
+        driver.manage().timeouts().pageLoadTimeout(3, TimeUnit.SECONDS);
+        driver.get("http://google.lv");
+
+        searchText(driver);
+        WebElement groovyLifeShopIsDisplayed = (new WebDriverWait(driver, 4)
+                .until(ExpectedConditions.presenceOfElementLocated(GROOVY_LIFE_SHOP)));
+        assert groovyLifeShopIsDisplayed.isDisplayed();
+        driver.quit();
+    }
+
+    private WebDriver getDriver() {
         System.setProperty("webdriver.gecko.driver", "/Users/aleksandrs/QAcourses/geckodriver");
         WebDriver driver = new FirefoxDriver();
         driver.manage().window().maximize();
-        driver.get("http://google.lv");
-        driver.manage().timeouts().pageLoadTimeout(3, TimeUnit.SECONDS);
-        WebElement searchBarElement = driver.findElement(SEARCH_BAR);
+        return driver;
+    }
+
+    public SearchingInGoogle searchText(WebDriver driver) {
+        WebElement searchBarElement = (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.presenceOfElementLocated(SEARCH_BAR));
         searchBarElement.sendKeys("groovyforlife");
         searchBarElement.submit();
-        WebDriverWait waitForElement = new WebDriverWait(driver, 4);
-        waitForElement.until(ExpectedConditions.presenceOfElementLocated(GROOVY_LIFE_SHOP));
-        assert driver.findElement(GROOVY_LIFE_SHOP).isDisplayed();
-        driver.quit();
+        return this;
     }
 }
